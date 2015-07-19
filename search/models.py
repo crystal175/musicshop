@@ -7,6 +7,10 @@ class Artist(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        """ Ordedering output by name. """
+        ordering = ["name"]
+
 
 class Song(models.Model):
     name = models.ForeignKey(Artist)
@@ -15,3 +19,6 @@ class Song(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        """ Ordedering output by title. """
+        ordering = ["title"]
