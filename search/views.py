@@ -4,14 +4,19 @@ from django.http import HttpResponse
 from .models import Artist, Song
 from .forms import SearchForm
 
+from django.core import serializers
+
 
 def main(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            mess = request.POST['query']
-            request.session["new"] = mess
-            return redirect('/search/result/')
+            mess = form.cleaned_data['query']
+
+            #res = serializers.serialize('json', Artist.objects.filter(name__icontains=mess))
+            #request.session["new"] = res
+            #return redirect('/search/result/')
+            return HttpResponse('result > %s' % mess)
     else:
         # GET /search/
         form = SearchForm()
@@ -19,6 +24,10 @@ def main(request):
 
 
 def result(request):
-    sn = request.session["new"]
+    data = request.session["new"]
     del request.session["new"]
-    return HttpResponse('result > %s' % sn)
+    data2 = list(serializers.deserialize('json', data))
+
+
+
+    return HttpResponse('result > %s' % data)
