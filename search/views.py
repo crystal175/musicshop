@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from .models import Artist, Song
 from .forms import SearchForm
-
-from django.core import serializers
 
 
 def main(request):
@@ -12,11 +11,9 @@ def main(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             mess = form.cleaned_data['query']
+            request.session["new"] = mess
+            return redirect('/search/result/')
 
-            #res = serializers.serialize('json', Artist.objects.filter(name__icontains=mess))
-            #request.session["new"] = res
-            #return redirect('/search/result/')
-            return HttpResponse('result > %s' % mess)
     else:
         # GET /search/
         form = SearchForm()
@@ -26,8 +23,53 @@ def main(request):
 def result(request):
     data = request.session["new"]
     del request.session["new"]
-    data2 = list(serializers.deserialize('json', data))
+    data_len = len(data)
+
+
+    if data_len == 2:
+        # artist and song
+        artist = False
+        try:
+            artist = Artist.objects.filter(name__contains=data[0])
+        except Artist.DoesNotExist:
+            pass
+
+        if artist:
+            # if artist and artist.count > 1:
+            # search song of artist
+            res = {}
+            for a in artist:
+                res[a] = a.song_set.all().filter(title__contains=data[1])
+        else:
+            # search in songs
+            song = Song.objects.filter(title__contains=data[1])
+            res = {}
+            for s in song:
+                res[s.name] = s
+
+
+    else:
+        # data_len == 1
+        artist = False
+        try:
+            artist = Artist.objects.filter(name__contains=data[0])
+        except Artist.DoesNotExist:
+            pass
+
+        if artist:
+            # if artist and artist.count > 1:
+            # search song of artist
+            res = {}
+            for a in artist:
+                res[a] = a.song_set.all()
+        else:
+            # search in songs
+            song = Song.objects.filter(title__contains=data[0])
+            res = {}
+            for s in song:
+                res[s.name] = s
 
 
 
-    return HttpResponse('result > %s' % data)
+    return render(request, 'search/result.html', locals())
+

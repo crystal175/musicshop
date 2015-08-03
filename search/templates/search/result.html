@@ -1,0 +1,28 @@
+{% extends 'search/_layout/base.html' %}
+
+{% block title %}Main page{% endblock title %}
+
+{% block content %}
+
+data: {{ data }}<br>
+data_len: {{ data_len }}<br>
+
+
+{% if res %}
+    <p>res:</p>
+
+    {% for key, value in res.items %}
+        {% if value.count > 0 %}
+            {% for val in value %}
+                {{ key }} - {{ val }}<br>
+            {% endfor %}
+        {% else %}
+            {{ key }} - {{ value }} ---<br>
+        {% endif %}
+    {% endfor %}
+
+
+{% endif %}
+
+
+{% endblock content %}
