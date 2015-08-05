@@ -7,9 +7,8 @@
 data: {{ data }}<br>
 data_len: {{ data_len }}<br>
 
-
 {% if res %}
-    <p>res:</p>
+    <p>result:</p>
 
     {% for key, value in res.items %}
         {% if value.count > 0 %}
@@ -21,8 +20,6 @@ data_len: {{ data_len }}<br>
         {% endif %}
     {% endfor %}
 
-
 {% endif %}
-
 
 {% endblock content %}

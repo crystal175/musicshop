@@ -23,53 +23,38 @@ def main(request):
 def result(request):
     data = request.session["new"]
     del request.session["new"]
-    data_len = len(data)
 
+    artist = False
+    try:
+        artist = Artist.objects.filter(name__icontains=data[0])
+    except Artist.DoesNotExist:
+        pass
+
+    res = {}
+    data_len = len(data)
 
     if data_len == 2:
         # artist and song
-        artist = False
-        try:
-            artist = Artist.objects.filter(name__contains=data[0])
-        except Artist.DoesNotExist:
-            pass
-
         if artist:
-            # if artist and artist.count > 1:
             # search song of artist
-            res = {}
             for a in artist:
-                res[a] = a.song_set.all().filter(title__contains=data[1])
+                res[a] = a.song_set.all().filter(title__icontains=data[1])
         else:
             # search in songs
-            song = Song.objects.filter(title__contains=data[1])
-            res = {}
+            song = Song.objects.filter(title__icontains=data[1])
             for s in song:
                 res[s.name] = s
-
-
     else:
-        # data_len == 1
-        artist = False
-        try:
-            artist = Artist.objects.filter(name__contains=data[0])
-        except Artist.DoesNotExist:
-            pass
-
+        # artist or song, data_len == 1
         if artist:
-            # if artist and artist.count > 1:
-            # search song of artist
-            res = {}
+            # search all song of artist
             for a in artist:
                 res[a] = a.song_set.all()
         else:
             # search in songs
-            song = Song.objects.filter(title__contains=data[0])
-            res = {}
+            song = Song.objects.filter(title__icontains=data[0])
             for s in song:
                 res[s.name] = s
-
-
 
     return render(request, 'search/result.html', locals())
 
