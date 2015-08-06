@@ -1,24 +1,29 @@
 {% extends 'search/_layout/base.html' %}
 
-{% block title %}Main page{% endblock title %}
+{% block title %}Result page{% endblock title %}
 
 {% block content %}
 
-data: {{ data }}<br>
-data_len: {{ data_len }}<br>
-
 {% if res %}
-    <p>result:</p>
 
+<table id="mustable" class="table" cellspacing="0" width="500px">
+    <thead>
+        <tr>
+            <th>Result</th>
+        </tr>
+    </thead>
+     <tbody>
     {% for key, value in res.items %}
         {% if value.count > 0 %}
             {% for val in value %}
-                {{ key }} - {{ val }}<br>
+                <tr><td><a href="">{{ key }} - {{ val }}</a></td></tr>
             {% endfor %}
         {% else %}
-            {{ key }} - {{ value }} ---<br>
+            <tr><td><a href="">{{ key }} - {{ value }}</a></td></tr>
         {% endif %}
     {% endfor %}
+    </tbody>
+</table>
 
 {% endif %}
 
