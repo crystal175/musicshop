@@ -1,5 +1,11 @@
 .search-block {
-    margin: 100px auto;
+    margin: 100px auto 10px;
+    width: 500px;
+    border:1px solid #ccc;
+    padding: 10px;
+}
+.resp-block {
+    margin: 10px auto 10px;
     width: 500px;
     border:1px solid #ccc;
     padding: 10px;

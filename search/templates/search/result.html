@@ -1,12 +1,19 @@
 {% extends 'search/_layout/base.html' %}
+{% load staticfiles %}
 
 {% block title %}Result page{% endblock title %}
 
-{% block content %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/style.css' %}">
+{% endblock css %}
+{% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+{% endblock js %}
 
+{% block content %}
 {% if res %}
 
-<table id="mustable" class="table" cellspacing="0" width="500px">
+<table id="mus-t" class="table" cellspacing="0" width="500px">
     <thead>
         <tr>
             <th>Result</th>
@@ -25,6 +32,22 @@
     </tbody>
 </table>
 
-{% endif %}
+<script>
+$( document ).ready(function() {
+    $( "a" ).click(function( event ) {
+        event.preventDefault();
+        $( this ).hide( "slow" );
+    });
 
+
+    $( "#mus-t" ).on('click', 'tr', function() {
+        alert($(this).text());
+        var dt = $(this).text();
+        console.log(dt);
+    });
+
+});
+</script>
+
+{% endif %}
 {% endblock content %}

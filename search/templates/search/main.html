@@ -5,15 +5,76 @@
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'search/css/style.css' %}">
 {% endblock css %}
+{% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--
+    <script src="{% static 'search/js/script.js' %}"></script>
+    -->
+{% endblock js %}
 
 {% block content %}
 <div class="search-block">
-
-    <form method="post" action="">
+    <form id="post-form" method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Search">
     </form>
-
 </div>
+<!-- Response -->
+<div id="resp" class="resp-block">
+
+ 
+</div>
+
+<script>
+$(document).ready(function() {
+    
+    $('#post-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!");
+        go_find();
+    });
+
+    function go_find() {
+        console.log("go_find is working!");
+        console.log($('#search-text').val());
+        $.ajax({
+            url: "/search/hello/",
+            type: "POST",
+            data: {
+                search_text: $('#search-text').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+
+            success: function(json) {
+                $('#search-text').val('');
+                //console.log(json);
+                console.log("success");
+                
+                // render template on django 
+                $('#resp').html(json);
+
+
+                // 2 plain res
+                //$('#resp').append(json+"<br>")
+
+                // 1 json
+                //for (js in json) {
+                //    console.log(js);
+                //    $('#resp').prepend(js + "<br>");
+                //}
+                //$('#resp').append("<p>"+json+"</p>")
+            },
+
+            error: function(xhr, errmsg, err) {
+                $('#resp').html("<p>Error: "+xhr.responseText+" </p>");
+                console.log(xhr.status + ": " + xhr.responseText);                
+            }
+        });
+    };
+
+});
+</script>
+
+
 {% endblock content %}

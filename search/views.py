@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from .models import Artist, Song
 from .forms import SearchForm
 
+import json
+
 
 def main(request):
     if request.method == 'POST':
@@ -13,7 +15,6 @@ def main(request):
             mess = form.cleaned_data['query']
             request.session["new"] = mess
             return redirect('/search/result/')
-
     else:
         # GET /search/
         form = SearchForm()
@@ -22,7 +23,7 @@ def main(request):
 
 def result(request):
     data = request.session["new"]
-    del request.session["new"]
+    #del request.session["new"]
 
     artist = False
     try:
@@ -56,5 +57,31 @@ def result(request):
             for s in song:
                 res[s.name] = s
 
-    return render(request, 'search/result.html', locals())
+    return render(request, 'search/res2.html', locals())
 
+
+def hello(request):
+    if request.method == 'POST':
+        response_data = request.POST.get('search_text')
+        res = {}
+        mysong = Song.objects.filter(title__icontains=response_data)
+        for m in mysong:
+            res[m.title] = m.title
+
+        return render(request, 'search/ajax-result.html', locals())
+
+        #2 plain res 
+        #return HttpResponse(res)
+
+
+        #1 json
+        '''
+        return HttpResponse(
+            json.dumps(res),
+            content_type="application/json")
+        '''
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

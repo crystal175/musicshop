@@ -1,0 +1,19 @@
+
+<table id="mus-t" class="table" cellspacing="0" width="500px">
+    <thead>
+        <tr>
+            <th>Result:</th>
+        </tr>
+    </thead>
+     <tbody>
+    {% for key, value in res.items %}
+        {% if value.count > 0 %}
+            {% for val in value %}
+                <tr><td><a href="">{{ key }} - {{ val }}</a></td></tr>
+            {% endfor %}
+        {% else %}
+            <tr><td><a href="">{{ key }} - {{ value }}</a></td></tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
