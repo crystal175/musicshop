@@ -10,11 +10,12 @@
     <!--
     <script src="{% static 'search/js/script.js' %}"></script>
     -->
+    <script src="http://malsup.github.com/jquery.form.js"></script> 
 {% endblock js %}
 
 {% block content %}
 <div class="search-block">
-    <form id="post-form" method="post" action="">
+    <form id="post-form" method="post" action="/search/hello/">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Search">
@@ -29,49 +30,17 @@
 <script>
 $(document).ready(function() {
     
-    $('#post-form').on('submit', function(event){
-        event.preventDefault();
+    $('#post-form').ajaxForm(function(data) {
+        //event.preventDefault();
         console.log("form submitted!");
-        go_find();
+        $('#resp').html(data)
     });
 
-    function go_find() {
-        console.log("go_find is working!");
-        console.log($('#search-text').val());
-        $.ajax({
-            url: "/search/hello/",
-            type: "POST",
-            data: {
-                search_text: $('#search-text').val(),
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-
-            success: function(json) {
-                $('#search-text').val('');
-                //console.log(json);
-                console.log("success");
-                
-                // render template on django 
-                $('#resp').html(json);
-
-
-                // 2 plain res
-                //$('#resp').append(json+"<br>")
-
-                // 1 json
-                //for (js in json) {
-                //    console.log(js);
-                //    $('#resp').prepend(js + "<br>");
-                //}
-                //$('#resp').append("<p>"+json+"</p>")
-            },
-
-            error: function(xhr, errmsg, err) {
-                $('#resp').html("<p>Error: "+xhr.responseText+" </p>");
-                console.log(xhr.status + ": " + xhr.responseText);                
-            }
-        });
-    };
+    $( "#post-form" ).submit(function( event ) {
+    var txt = $( "#search-text" ).val();
+    console.log(txt);
+    //validate field
+    });
 
 });
 </script>

@@ -62,17 +62,23 @@ def result(request):
 
 def hello(request):
     if request.method == 'POST':
-        response_data = request.POST.get('search_text')
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            mess = form.cleaned_data['query']
+        else:
+            mess = 'Bad request'
+            
+        #response_data = request.POST.get('search_text')
         res = {}
-        mysong = Song.objects.filter(title__icontains=response_data)
+        mysong = Song.objects.filter(title__icontains=mess[0])
         for m in mysong:
             res[m.title] = m.title
-
+        
         return render(request, 'search/ajax-result.html', locals())
+        #return HttpResponse(res)
 
         #2 plain res 
         #return HttpResponse(res)
-
 
         #1 json
         '''
@@ -85,3 +91,4 @@ def hello(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
