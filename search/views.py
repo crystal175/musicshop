@@ -67,15 +67,25 @@ def hello(request):
             mess = form.cleaned_data['query']
         else:
             mess = 'Bad request'
-            
-        #response_data = request.POST.get('search_text')
+
+        artist = False
+        try:
+            artist = Artist.objects.filter(name__icontains=mess[0])
+        except Artist.DoesNotExist:
+            pass
+
         res = {}
-        mysong = Song.objects.filter(title__icontains=mess[0])
-        for m in mysong:
-            res[m.title] = m.title
-        
+        mess_len = len(mess)
+
+        if mess_len == 1:
+            if artist:
+            # search all song of artist
+                for a in artist:
+                    res[a] = a.song_set.all()
+            else:
+                # search in songs
+                song = Song.objects.filter(title__icontains=mess[0])           
         return render(request, 'search/ajax-result.html', locals())
-        #return HttpResponse(res)
 
         #2 plain res 
         #return HttpResponse(res)
