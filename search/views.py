@@ -80,11 +80,32 @@ def hello(request):
         if mess_len == 1:
             if artist:
             # search all song of artist
-                for a in artist:
-                    res[a] = a.song_set.all()
+            #    for a in artist:
+            #        res[a] = a.song_set.all()
+                pass
+
             else:
                 # search in songs
-                song = Song.objects.filter(title__icontains=mess[0])           
+                song = Song.objects.filter(title__icontains=mess[0])   
+        
+
+
+
+        if mess_len == 2:
+            # artist and song
+            if artist:
+                # search song of artist
+                artist = artist.filter(title__icontains=mess[1])
+        '''
+            else:
+                # search in songs
+                song = Song.objects.filter(title__icontains=mess[1])
+                for s in song:
+                    res[s.name] = s
+        '''
+
+
+
         return render(request, 'search/ajax-result.html', locals())
 
         #2 plain res 

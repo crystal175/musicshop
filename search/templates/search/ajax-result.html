@@ -22,4 +22,12 @@
 
 {{ form.errors }}
 
+<hr>
+<p>for mess_len == 2</p>
+{% for art in artist %}
+    {% for art2 in art.song_set.all %}
+                {{ art }} {{ art2 }} {{ art2.id }}<br>
+            {% endfor %}
+{% endfor %}
+
 
