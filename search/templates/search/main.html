@@ -22,10 +22,7 @@
     </form>
 </div>
 <!-- Response -->
-<div id="resp" class="resp-block">
-
- 
-</div>
+<div id="resp" class="resp-block"></div>
 
 <script>
 $(document).ready(function() {
@@ -34,12 +31,14 @@ $(document).ready(function() {
         //event.preventDefault();
         console.log("form submitted!");
         $('#resp').html(data)
+        //$('#resp').html(data);
+
     });
 
     $( "#post-form" ).submit(function( event ) {
-    var txt = $( "#search-text" ).val();
-    console.log(txt);
-    //validate field
+        var txt = $( "#search-text" ).val();
+        console.log(txt);
+        //validate field
     });
 
 });

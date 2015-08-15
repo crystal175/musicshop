@@ -69,19 +69,19 @@ def hello(request):
             mess = 'Bad request'
 
         artist = False
+        mess_len = len(mess)
+
         try:
             artist = Artist.objects.filter(name__icontains=mess[0])
         except Artist.DoesNotExist:
             pass
 
-        res = {}
-        mess_len = len(mess)
 
         if mess_len == 1:
+
             if artist:
-            # search all song of artist
-            #    for a in artist:
-            #        res[a] = a.song_set.all()
+                # search all song of artist
+                # in templ
                 pass
 
             else:
@@ -89,22 +89,21 @@ def hello(request):
                 song = Song.objects.filter(title__icontains=mess[0])   
         
 
-
-
         if mess_len == 2:
             # artist and song
-            if artist:
-                # search song of artist
-                artist = artist.filter(title__icontains=mess[1])
-        '''
-            else:
-                # search in songs
+            try:
                 song = Song.objects.filter(title__icontains=mess[1])
-                for s in song:
-                    res[s.name] = s
-        '''
-
-
+            except Song.DoesNotExist:
+                pass
+            if artist and song:
+                # search song of artist
+                song = Song.objects.filter(
+                    title__icontains=mess[1]).filter(
+                        artist__name__icontains=mess[0])
+        
+            else:
+                # search in songs(only song)
+                song = Song.objects.filter(title__icontains=mess[1])
 
         return render(request, 'search/ajax-result.html', locals())
 

@@ -1,4 +1,6 @@
 
+<span><b>mess_len: </b>{{ mess_len }}</span><br>
+<span><b>artist: </b>{{ artist}}</span><br>
 <table id="mus-t" class="table" cellspacing="0" width="500px">
     <thead>
         <tr>
@@ -6,28 +8,53 @@
         </tr>
     </thead>
     <tbody>
-    {% if artist %}
-        {% for art in artist %}
-            {% for art2 in art.song_set.all %}
-                <tr><td><a href="">{{ art }} {{ art2 }} {{ art2.id }}</a></td></tr>
+    {% if mess_len == 1 %}
+        {% if artist %}
+            <span>artist and mess_len==1</span>
+            {% for art in artist %}
+                {% for art2 in art.songs.all %}
+                    <tr><td><a href="">{{ art }} {{ art2 }} {{ art2.id }}</a></td></tr>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    {% else %}
-        {% for mys in song  %}
-            <tr><td><a href="">{{ mys.name }} - {{ mys }}  {{ mys.id }}</a></td></tr>
-        {% endfor %}
+        {% else %}
+            <span>---else ---</span>
+            {% for mys in song  %}
+                <tr><td><a href="">{{ mys.artist }} - {{ mys }}  {{ mys.id }}+++</a></td></tr>
+            {% endfor %}
+        {% endif %}
     {% endif %}
+
+    {% if mess_len == 2 %}
+        {% if artist and song %}
+            <span>artist and mess_len==2</span>
+                <tr><td><a href="">+++</a></td></tr>            
+                {% for mys in song  %}
+                    <tr><td><a href="">{{ mys.artist }} - {{ mys }}  {{ mys.id }}</a></td></tr>
+                {% endfor %}
+
+        {% else %}
+            <p>else</p>
+            {% if  artist %}
+            artist
+                {% for art in artist %}
+                    {% for art2 in art.songs.all %}
+                        <tr><td><a href="">{{ art }} {{ art2 }} {{ art2.id }}**</a></td></tr>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+                <tr><td><a href="">else 2+++</a></td></tr>            
+                {% for mys in song  %}
+                    <tr><td><a href="">{{ mys.artist }} - {{ mys }}  {{ mys.id }}</a></td></tr>
+                {% endfor %}                
+            {% endif %}
+            
+
+        {% endif %}
+    {% endif %}
+
+
     </tbody>
 </table>
-
 {{ form.errors }}
-
 <hr>
-<p>for mess_len == 2</p>
-{% for art in artist %}
-    {% for art2 in art.song_set.all %}
-                {{ art }} {{ art2 }} {{ art2.id }}<br>
-            {% endfor %}
-{% endfor %}
-
 
