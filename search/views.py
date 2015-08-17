@@ -14,11 +14,6 @@ def main(request):
         if form.is_valid():
             mess = form.cleaned_data['query']
             request.session["new"] = mess
-        else:
-            print('not valid2')
-            del form
-            #print(form.errors)
-
     else:
         # GET /search/
         form = SearchForm()
@@ -26,45 +21,45 @@ def main(request):
 
 
 def ajax_result(request):
-    mess = request.session['new']
-    del request.session['new']
-    mess_len = len(mess)
-    print('ajax_result')
-    print(mess)
-
-    try:
-        artist = Artist.objects.filter(name__icontains=mess[0])
-    except Artist.DoesNotExist:
-        pass
-
-    if mess_len == 1:
-        if artist:
-            # search all song of artist
-            # in template
-            pass
-
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            mess = form.cleaned_data['query']
         else:
-            # search in songs
-            song = Song.objects.filter(title__icontains=mess[0])   
-    
+            mess = 'Bad request'
 
-    if mess_len == 2:
-        # artist and song
+        mess_len = len(mess)
+
         try:
-            song = Song.objects.filter(title__icontains=mess[1])
-        except Song.DoesNotExist:
+            artist = Artist.objects.filter(name__icontains=mess[0])
+        except Artist.DoesNotExist:
             pass
-        if artist and song:
-            # search song of artist
-            song = Song.objects.filter(
-                title__icontains=mess[1]).filter(
-                    artist__name__icontains=mess[0])
-    
-        else:
-            # search in songs(only song)
-            song = Song.objects.filter(title__icontains=mess[1])
 
-    return render(request, 'search/ajax-result.html', locals())
+        if mess_len == 1:
+            if artist:
+                # search all song of artist
+                # in template
+                pass
+            else:
+                # search in songs
+                song = Song.objects.filter(title__icontains=mess[0])   
+        
+        if mess_len == 2:
+            # artist and song
+            try:
+                song = Song.objects.filter(title__icontains=mess[1])
+            except Song.DoesNotExist:
+                pass
+            if artist and song:
+                # search song of artist
+                song = Song.objects.filter(
+                    title__icontains=mess[1]).filter(
+                        artist__name__icontains=mess[0])
+            else:
+                # search in songs(only song)
+                song = Song.objects.filter(title__icontains=mess[1])
+
+        return render(request, 'search/ajax-result.html', locals())
     '''
     return render(request, 'search/ajax-result.html', {
         'artist': artist,

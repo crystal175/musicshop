@@ -9,12 +9,12 @@
         {% if artist and not song %}
             {% for art in artist %}
                 {% for art2 in art.songs.all %}
-                    <tr><td><a href="">{{ art }} {{ art2 }} {{ art2.id }}</a></td></tr>
+                    <tr><td><a href="{{ art2.id }}">{{ art }} - {{ art2 }}</a></td></tr>
                 {% endfor %}
             {% endfor %}
         {% else %}
             {% for mys in song  %}
-                <tr><td><a href="">{{ mys.artist }} - {{ mys }}  {{ mys.id }}</a></td></tr>
+                <tr><td><a href="{{ mys.id }}">{{ mys.artist }} - {{ mys }}</a></td></tr>
             {% endfor %}
         {% endif %}
         
