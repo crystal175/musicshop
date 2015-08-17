@@ -14,111 +14,75 @@ def main(request):
         if form.is_valid():
             mess = form.cleaned_data['query']
             request.session["new"] = mess
-            return redirect('/search/result/')
+        else:
+            print('not valid2')
+            del form
+            #print(form.errors)
+
     else:
         # GET /search/
         form = SearchForm()
     return render(request, 'search/main.html', {'form': form})
 
 
-def result(request):
-    data = request.session["new"]
-    #del request.session["new"]
+def ajax_result(request):
+    mess = request.session['new']
+    del request.session['new']
+    mess_len = len(mess)
+    print('ajax_result')
+    print(mess)
 
-    artist = False
     try:
-        artist = Artist.objects.filter(name__icontains=data[0])
+        artist = Artist.objects.filter(name__icontains=mess[0])
     except Artist.DoesNotExist:
         pass
 
-    res = {}
-    data_len = len(data)
-
-    if data_len == 2:
-        # artist and song
-        if artist:
-            # search song of artist
-            for a in artist:
-                res[a] = a.song_set.all().filter(title__icontains=data[1])
-        else:
-            # search in songs
-            song = Song.objects.filter(title__icontains=data[1])
-            for s in song:
-                res[s.name] = s
-    else:
-        # artist or song, data_len == 1
+    if mess_len == 1:
         if artist:
             # search all song of artist
-            for a in artist:
-                res[a] = a.song_set.all()
-        else:
-            # search in songs
-            song = Song.objects.filter(title__icontains=data[0])
-            for s in song:
-                res[s.name] = s
-
-    return render(request, 'search/res2.html', locals())
-
-
-def hello(request):
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            mess = form.cleaned_data['query']
-        else:
-            mess = 'Bad request'
-
-        artist = False
-        mess_len = len(mess)
-
-        try:
-            artist = Artist.objects.filter(name__icontains=mess[0])
-        except Artist.DoesNotExist:
+            # in template
             pass
 
+        else:
+            # search in songs
+            song = Song.objects.filter(title__icontains=mess[0])   
+    
 
-        if mess_len == 1:
+    if mess_len == 2:
+        # artist and song
+        try:
+            song = Song.objects.filter(title__icontains=mess[1])
+        except Song.DoesNotExist:
+            pass
+        if artist and song:
+            # search song of artist
+            song = Song.objects.filter(
+                title__icontains=mess[1]).filter(
+                    artist__name__icontains=mess[0])
+    
+        else:
+            # search in songs(only song)
+            song = Song.objects.filter(title__icontains=mess[1])
 
-            if artist:
-                # search all song of artist
-                # in templ
-                pass
+    return render(request, 'search/ajax-result.html', locals())
+    '''
+    return render(request, 'search/ajax-result.html', {
+        'artist': artist,
+        'song': song,
+        'form_errors': form.errors
+        })
+    '''
 
-            else:
-                # search in songs
-                song = Song.objects.filter(title__icontains=mess[0])   
-        
-
-        if mess_len == 2:
-            # artist and song
-            try:
-                song = Song.objects.filter(title__icontains=mess[1])
-            except Song.DoesNotExist:
-                pass
-            if artist and song:
-                # search song of artist
-                song = Song.objects.filter(
-                    title__icontains=mess[1]).filter(
-                        artist__name__icontains=mess[0])
-        
-            else:
-                # search in songs(only song)
-                song = Song.objects.filter(title__icontains=mess[1])
-
-        return render(request, 'search/ajax-result.html', locals())
-
-        #2 plain res 
-        #return HttpResponse(res)
-
-        #1 json
-        '''
-        return HttpResponse(
-            json.dumps(res),
-            content_type="application/json")
-        '''
+    #1 json
+    '''
+    return HttpResponse(
+        json.dumps(res),
+        content_type="application/json")
+    '''
+    '''
     else:
         return HttpResponse(
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
-
+    '''

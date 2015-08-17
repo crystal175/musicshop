@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="search-block">
-    <form id="post-form" method="post" action="/search/hello/">
+    <form id="post-form" method="post" action="/search/ajax_result/">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Search">
@@ -30,8 +30,7 @@ $(document).ready(function() {
     $('#post-form').ajaxForm(function(data) {
         //event.preventDefault();
         console.log("form submitted!");
-        $('#resp').html(data)
-        //$('#resp').html(data);
+        $('#resp').html(data);
 
     });
 
