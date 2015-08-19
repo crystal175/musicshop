@@ -1,5 +1,23 @@
 $(document).ready(function() {
     
+    $('#post-form').ajaxForm(function(data) {
+        //event.preventDefault();
+        console.log("form submitted!");
+        $('#resp').html(data);
+
+    });
+
+    $( "#post-form" ).submit(function( event ) {
+        var txt = $( "#search-text" ).val();
+        $('#search-text').val('');
+        console.log(txt);
+        //validate field
+    });
+
+});
+
+/*$(document).ready(function() {
+    
     $('#post-form').on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");
@@ -33,3 +51,4 @@ $(document).ready(function() {
     };
 
 });
+*/

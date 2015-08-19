@@ -7,10 +7,8 @@
 {% endblock css %}
 {% block js %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!--
-    <script src="{% static 'search/js/main.js' %}"></script>
-    -->
     <script src="http://malsup.github.com/jquery.form.js"></script> 
+    <script src="{% static 'search/js/main.js' %}"></script>
 {% endblock js %}
 
 {% block content %}
@@ -23,25 +21,5 @@
 </div>
 <!-- Response -->
 <div id="resp" class="resp-block"></div>
-
-<script>
-$(document).ready(function() {
-    
-    $('#post-form').ajaxForm(function(data) {
-        //event.preventDefault();
-        console.log("form submitted!");
-        $('#resp').html(data);
-
-    });
-
-    $( "#post-form" ).submit(function( event ) {
-        var txt = $( "#search-text" ).val();
-        console.log(txt);
-        //validate field
-    });
-
-});
-</script>
-
 
 {% endblock content %}
