@@ -52,3 +52,20 @@ $(document).ready(function() {
 
 });
 */
+
+/*
+$( document ).ready(function() {
+
+    $( "a" ).click(function( event ) {
+        event.preventDefault();
+        $( this ).hide( "slow" );
+    });
+
+    $( "#mus-t" ).on('click', 'tr', function() {
+        alert($(this).text());
+        var dt = $(this).text();
+        console.log(dt);
+    });
+
+});
+*/

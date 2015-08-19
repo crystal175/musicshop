@@ -59,7 +59,7 @@ def ajax_result(request):
                 # search in songs(only song)
                 song = Song.objects.filter(title__icontains=mess[1])
 
-        return render(request, 'search/ajax-result.html', locals())
+        return render(request, 'search/ajax_result.html', locals())
     '''
     return render(request, 'search/ajax-result.html', {
         'artist': artist,
@@ -81,3 +81,7 @@ def ajax_result(request):
             content_type="application/json"
         )
     '''
+
+def order(request, pk):
+    song = Song.objects.get(id=pk)
+    return render(request, 'search/order_song.html', {'song': song})
