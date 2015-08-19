@@ -10,7 +10,7 @@ $(document).ready(function() {
         console.log("go_find is working!");
         console.log($('#search-text').val());
         $.ajax({
-            url: "/search/hello/",
+            url: "/search/",
             type: "POST",
             data: {
                 search_text: $('#search-text').val(),
@@ -21,20 +21,8 @@ $(document).ready(function() {
                 $('#search-text').val('');
                 //console.log(json);
                 console.log("success");
-                
                 // render template on django 
                 $('#resp').html(json);
-
-
-                // 2 plain res
-                //$('#resp').append(json+"<br>")
-
-                // 1 json
-                //for (js in json) {
-                //    console.log(js);
-                //    $('#resp').prepend(js + "<br>");
-                //}
-                //$('#resp').append("<p>"+json+"</p>")
             },
 
             error: function(xhr, errmsg, err) {
