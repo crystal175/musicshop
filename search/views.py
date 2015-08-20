@@ -29,7 +29,6 @@ def ajax_result(request):
             mess = 'Bad request'
 
         mess_len = len(mess)
-
         try:
             artist = Artist.objects.filter(name__icontains=mess[0])
         except Artist.DoesNotExist:
@@ -61,20 +60,18 @@ def ajax_result(request):
 
         return render(request, 'search/ajax_result.html', locals())
     '''
-    return render(request, 'search/ajax-result.html', {
-        'artist': artist,
-        'song': song,
-        'form_errors': form.errors
-        })
+        return render(request, 'search/ajax_result.html', {
+            'artist': artist,
+            'song': song,
+            'form_errors': form.errors
+            })
     '''
 
     #1 json
     '''
-    return HttpResponse(
-        json.dumps(res),
-        content_type="application/json")
-    '''
-    '''
+        return HttpResponse(
+            json.dumps(res),
+            content_type="application/json")
     else:
         return HttpResponse(
             json.dumps({"nothing to see": "this isn't happening"}),
@@ -85,3 +82,4 @@ def ajax_result(request):
 def order(request, pk):
     song = Song.objects.get(id=pk)
     return render(request, 'search/order_song.html', {'song': song})
+

@@ -22,3 +22,18 @@ class Song(models.Model):
     class Meta:
         """ Ordedering output by title. """
         ordering = ["title"]
+
+class Order(models.Model):
+    song = models.ForeignKey(Song, related_name='orders')
+    address = models.CharField(max_length=30)
+    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
+    comment = models.TextField(blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{0} - {1} | {2}'.format(
+            self.song.artist,
+            self.song,
+            self.date.time())
