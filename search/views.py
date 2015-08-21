@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
-from .models import Artist, Song
-from .forms import SearchForm
+from .models import Artist, Song, Order
+from .forms import SearchForm, OrderForm
 
 import json
 
@@ -81,5 +81,18 @@ def ajax_result(request):
 
 def order(request, pk):
     song = Song.objects.get(id=pk)
-    return render(request, 'search/order_song.html', {'song': song})
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/search/thanks/')
+    else:
+        form = OrderForm(initial={'song': song.title})
 
+    return render(request, 'search/order_song.html', {
+        'song': song,
+        'form': form})
+
+
+def thanks(request):
+    return render(request, 'search/thanks.html')

@@ -1,5 +1,8 @@
 from django import forms
 
+from .models import Order
+
+
 class SearchForm(forms.Form):
     """ User search form. """
 
@@ -14,3 +17,12 @@ class SearchForm(forms.Form):
             if len(item) < 3 or item == '-':
                 query.remove(item)
         return query
+
+class OrderForm(forms.ModelForm):
+    """ Order creation form. """
+    #song = forms.IntegerField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = Order
+        fields = ['song', 'email', 'address', 'name', 'surname', 'comment']
+

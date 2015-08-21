@@ -9,12 +9,5 @@
 {% block js %}{% endblock js %}
 
 {% block content %}
-
-    <p>{{ song.artist }} - {{ song }}</p>
-    <form id="order-form" method="post" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
-    </form>
-
+    <h3>Thanks!</h3>
 {% endblock content %}
