@@ -18,6 +18,10 @@
             {% endfor %}
         {% endif %}
         
+        {% if not artist and not song %}
+            <tr><td>Nothing found</td></tr>
+        {% endif %}
+
         <tr><td>{{ form.errors }}</td></tr>
     </tbody>
 </table>

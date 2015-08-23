@@ -10,3 +10,9 @@
     border:1px solid #ccc;
     padding: 10px;
 }
+.order-block{
+    position: relative; 
+    left: 25%;
+    width:350px;
+    text-align: right;
+}

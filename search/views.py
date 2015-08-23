@@ -1,11 +1,8 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
 
 from .models import Artist, Song, Order
 from .forms import SearchForm, OrderForm
-
-import json
 
 
 def main(request):
@@ -41,8 +38,8 @@ def ajax_result(request):
                 pass
             else:
                 # search in songs
-                song = Song.objects.filter(title__icontains=mess[0])   
-        
+                song = Song.objects.filter(title__icontains=mess[0])
+
         if mess_len == 2:
             # artist and song
             try:
@@ -67,27 +64,26 @@ def ajax_result(request):
             })
     '''
 
-    #1 json
-    '''
-        return HttpResponse(
-            json.dumps(res),
-            content_type="application/json")
-    else:
-        return HttpResponse(
-            json.dumps({"nothing to see": "this isn't happening"}),
-            content_type="application/json"
-        )
-    '''
 
 def order(request, pk):
     song = Song.objects.get(id=pk)
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        form = OrderForm(request.POST, instance=song)
         if form.is_valid():
-            form.save()
+            Order.objects.create(
+                song=song,
+                email=form.cleaned_data['email'],
+                address=form.cleaned_data['address'],
+                name=form.cleaned_data['name'],
+                surname=form.cleaned_data['surname'])
             return redirect('/search/thanks/')
     else:
-        form = OrderForm(initial={'song': song.title})
+        form = OrderForm(initial={
+            'song': song.id,
+            'email': 'test@ml.ru',
+            'address': 'NY, st. 20',
+            'name': 'Mister',
+            'surname': 'Who'})
 
     return render(request, 'search/order_song.html', {
         'song': song,

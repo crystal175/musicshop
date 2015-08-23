@@ -23,10 +23,11 @@ class Song(models.Model):
         """ Ordedering output by title. """
         ordering = ["title"]
 
+
 class Order(models.Model):
     song = models.ForeignKey(Song, related_name='orders')
     address = models.CharField(max_length=30)
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
     comment = models.TextField(blank=True)
