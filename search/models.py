@@ -34,8 +34,4 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '{0} - {1} | {2} {3}'.format(
-            self.song.artist,
-            self.song,
-            self.name,
-            self.surname)
+        return '{0} - {1}'.format(self.song.artist, self.song)

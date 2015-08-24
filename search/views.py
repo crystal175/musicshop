@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 
 from .models import Artist, Song, Order
 from .forms import SearchForm, OrderForm
+from musicshop.settings import EMAIL_HOST_USER
 
 
 def main(request):
@@ -70,24 +72,21 @@ def order(request, pk):
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=song)
         if form.is_valid():
-            Order.objects.create(
-                song=song,
-                email=form.cleaned_data['email'],
-                address=form.cleaned_data['address'],
-                name=form.cleaned_data['name'],
-                surname=form.cleaned_data['surname'])
-            return redirect('/search/thanks/')
+            email = form.cleaned_data['email']
+            address = form.cleaned_data['address']
+            name = form.cleaned_data['name']
+            surname = form.cleaned_data['surname']
+            comment = form.cleaned_data['comment']
+            message = 'Your order is {0} - {1}'.format(song.artist.name, song)
+            sender = EMAIL_HOST_USER
+            Order.objects.create(song=song, email=email, address=address,
+                                 name=name, surname=surname, comment=comment)
+            send_mail('Musicshop', message, sender, [email])
+            return redirect(reverse('search:thanks'))
     else:
-        form = OrderForm(initial={
-            'song': song.id,
-            'email': 'test@ml.ru',
-            'address': 'NY, st. 20',
-            'name': 'Mister',
-            'surname': 'Who'})
-
-    return render(request, 'search/order_song.html', {
-        'song': song,
-        'form': form})
+        form = OrderForm(initial={'song': song.id})
+    return render(request, 'search/order_song.html',
+                  {'song': song, 'form': form})
 
 
 def thanks(request):
