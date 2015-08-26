@@ -21,8 +21,16 @@ class SearchForm(forms.Form):
 
 class OrderForm(forms.ModelForm):
     """ Order creation form. """
+
+    error_css_class = 'errorlist'
+    required_css_class = 'form-horizontal'
     song = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = Order
         fields = ['song', 'email', 'address', 'name', 'surname', 'comment']
+
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

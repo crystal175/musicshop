@@ -10,17 +10,20 @@
     border: 1px solid #ccc;
     padding: 10px;
 }
-.order-block{
+.order-block {
     margin: 10px auto 10px;
-    width: 300px;
-    text-align: right;
+    width: 500px;
+    //text-align: right;
     border: 1px solid #ccc;
     padding: 10px;
 }
-.thanks-block{
+.thanks-block {
     margin: 10px auto 10px;
     width: 300px;
     text-align: center;
     border:1px solid #ccc;
     padding: 10px;
+}
+.errorlist {
+    color: red;
 }
