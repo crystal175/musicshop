@@ -22,7 +22,7 @@ class SearchForm(forms.Form):
 class OrderForm(forms.ModelForm):
     """ Order creation form. """
 
-    error_css_class = 'errorlist'
+    error_css_class = 'error'
     required_css_class = 'form-horizontal'
     song = forms.IntegerField(widget=forms.HiddenInput())
 
