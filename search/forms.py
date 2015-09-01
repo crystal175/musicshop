@@ -6,8 +6,11 @@ from .models import Order
 class SearchForm(forms.Form):
     """ User search form. """
 
+    required_css_class = 'control-label'
+
     query = forms.CharField(widget=forms.TextInput(
-        attrs={'id': 'search-text', 'required': True, 'size': 50}),
+        attrs={'id': 'search-text', 'required': True, 'size': 50,
+               'class': 'form-control'}),
         min_length=4, max_length=20)
 
     def clean_query(self):
@@ -23,7 +26,7 @@ class OrderForm(forms.ModelForm):
     """ Order creation form. """
 
     error_css_class = 'error'
-    required_css_class = 'form-horizontal'
+    required_css_class = 'control-label'
     song = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
