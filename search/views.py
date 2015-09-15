@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
+from musicshop.settings import EMAIL_HOST_USER
 
 from .models import Artist, Song, Order
 from .forms import SearchForm, OrderForm
-from musicshop.settings import EMAIL_HOST_USER
 
 
 def main(request):
+    """ Main page view. """
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -19,7 +20,8 @@ def main(request):
     return render(request, 'search/main.html', {'form': form})
 
 
-def ajax_result(request):
+def ajax_search(request):
+    """ Ajax search view that takes 1 or 2 words. """
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -28,6 +30,8 @@ def ajax_result(request):
             mess = 'Bad request'
 
         mess_len = len(mess)
+        artist = False
+        song = False
         try:
             artist = Artist.objects.filter(name__icontains=mess[0])
         except Artist.DoesNotExist:
@@ -35,8 +39,7 @@ def ajax_result(request):
 
         if mess_len == 1:
             if artist:
-                # search all song of artist
-                # in template
+                # search all song of artist, iterate in template
                 pass
             else:
                 # search in songs
@@ -56,18 +59,15 @@ def ajax_result(request):
             else:
                 # search in songs(only song)
                 song = Song.objects.filter(title__icontains=mess[1])
-
-        return render(request, 'search/ajax_result.html', locals())
-    '''
-        return render(request, 'search/ajax_result.html', {
+        return render(request, 'search/ajax_search.html', {
             'artist': artist,
             'song': song,
             'form_errors': form.errors
-            })
-    '''
+        })
 
 
 def order(request, pk):
+    """ View that accept and save music order to database. """
     song = Song.objects.get(id=pk)
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=song)
@@ -90,4 +90,5 @@ def order(request, pk):
 
 
 def thanks(request):
+    """ Simple view that render result of user order. """
     return render(request, 'search/thanks.html')
