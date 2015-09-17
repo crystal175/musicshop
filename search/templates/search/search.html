@@ -1,0 +1,41 @@
+{% extends 'search/_layout/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Order page{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/style.css' %}">
+{% endblock css %}
+{% block js %}{% endblock js %}
+
+
+{% block content %}
+    <h2>Search</h2>
+
+    <form method="get" action=".">
+        <table>
+            {{ form.as_p }}
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="Search">
+                </td>
+            </tr>
+        </table>
+
+        {% if query %}
+            <h3>Results</h3>
+
+            {% for result in page.object_list %}
+                <p>
+                    {{ result.object.title }}
+                </p>
+            {% empty %}
+                <p>No results found.</p>
+            {% endfor %}
+
+        {% else %}
+            {# Show some example queries to run, maybe query syntax, something else? #}
+        {% endif %}
+    </form>
+{% endblock %}
