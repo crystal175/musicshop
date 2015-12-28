@@ -28,7 +28,7 @@
 
             {% for result in page.object_list %}
                 <p>
-                    {{ result.object.title }}
+                    {{ result.object.artist }} - {{ result.object.title }}
                 </p>
             {% empty %}
                 <p>No results found.</p>
