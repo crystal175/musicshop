@@ -1,18 +1,16 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
+from django.views.generic.edit import CreateView
 from musicshop.settings import EMAIL_HOST_USER
 
 from .models import Artist, Song, Order
 from .forms import SearchForm, OrderForm
 
 
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-
 class SongCreate(CreateView):
     model = Song
-    template_name = 'search/new_song.html'
+    template_name = 'search/create_song.html'
     fields = ['artist', 'title']
 
     def get_success_url(self):
