@@ -7,6 +7,18 @@ from .models import Artist, Song, Order
 from .forms import SearchForm, OrderForm
 
 
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+
+class SongCreate(CreateView):
+    model = Song
+    template_name = 'search/new_song.html'
+    fields = ['artist', 'title']
+
+    def get_success_url(self):
+        return reverse('search:thanks',)
+
+
 def main(request):
     """ Main page view. """
     if request.method == 'POST':
