@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
-from django.views.generic.edit import CreateView
+from django.views.generic import CreateView, TemplateView
 from musicshop.settings import EMAIL_HOST_USER
 
 from .models import Artist, Song, Order
@@ -15,6 +15,10 @@ class SongCreate(CreateView):
 
     def get_success_url(self):
         return reverse('search:thanks',)
+
+
+class SuccessView(TemplateView):
+    template_name = "search/thanks.html"
 
 
 def main(request):
@@ -97,8 +101,3 @@ def order(request, pk):
         form = OrderForm(initial={'song': song.id})
     return render(request, 'search/order_song.html',
                   {'song': song, 'form': form})
-
-
-def thanks(request):
-    """ Simple view that render result of user order. """
-    return render(request, 'search/thanks.html')

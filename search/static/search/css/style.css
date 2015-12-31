@@ -2,21 +2,31 @@
     margin: 100px auto 10px;
     width: 500px;
     border: 1px solid #ccc;
-    padding: 20px 10px 40px;
+    padding: 20px 10px 10px;
 }
+
 .resp-block {
     margin: 10px auto 10px;
     width: 500px;
     border: 1px solid #ccc;
     padding: 10px;
 }
+
 .order-block {
     margin: 10px auto 10px;
     width: 500px;
-    //text-align: right;
-    //border: 1px solid #ccc;
     padding: 20px;
 }
+
+.order-center {
+    text-align: center;
+    font-weight: bold;
+}
+
+.order-title {
+    text-align: center;
+}
+
 .thanks-block {
     margin: 10px auto 10px;
     width: 300px;
