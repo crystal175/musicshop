@@ -13,8 +13,9 @@
 {% endblock js %}
 
 {% block content %}
+<div class="order-title"><a href="{% url 'search:song_list' %}">Song list</a></div>
 <div class="search-block">
-    <form id="post-form" method="post" action="/search/ajax_search/">
+    <form id="post-form" method="post" action="{% url 'search:ajax_search' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <div class="form-group">

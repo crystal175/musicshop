@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, ListView
 from musicshop.settings import EMAIL_HOST_USER
 
 from .models import Artist, Song, Order
@@ -15,6 +15,11 @@ class SongCreate(CreateView):
 
     def get_success_url(self):
         return reverse('search:thanks',)
+
+
+class SongList(ListView):
+    model = Song
+    context_object_name = 'song_list'
 
 
 class SuccessView(TemplateView):

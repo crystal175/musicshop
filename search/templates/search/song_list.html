@@ -1,0 +1,31 @@
+{% extends 'search/_layout/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Order page{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+{% endblock css %}
+{% block js %}{% endblock js %}
+
+{% block content %}
+<div class="song-list-block">
+<table id="mus-t" class="table" cellspacing="0" width="500px">
+    <thead>
+        <tr>
+            <th>Song list:</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for song in song_list %}
+            <tr><td><a href="{{ song.id }}">{{ song.artist }} - {{ song.title }}</a></td></tr>
+        {% empty %}
+            <tr><td>No songs</td></tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+    <p><a href="{% url 'search:create_song' %}" class="btn btn-default">Create a new song</a></p>
+</div>
+{% endblock content %}
