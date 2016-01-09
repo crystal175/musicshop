@@ -7,26 +7,39 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 {% endblock css %}
 {% block js %}
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/s/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script> 
     <script src="{% static 'search/js/main.js' %}"></script>
 {% endblock js %}
 
 {% block content %}
-<div class="order-title"><a href="{% url 'search:song_list' %}">Song list</a></div>
-<div class="search-block">
-    <form id="post-form" method="post" action="{% url 'search:ajax_search' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-group">
-            <div>
-                <input type="submit" class="btn btn-default" value="Search" />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="order-title">
+                <a href="{% url 'search:song_list' %}">Song list</a>
             </div>
         </div>
-    </form>
+    </div>
 </div>
-<!-- Response -->
-<div id="resp" class="resp-block"></div>
-
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="search-block">
+                <form id="post-form" method="post" action="{% url 'search:ajax_search' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="form-group">
+                        <div>
+                            <input type="submit" class="btn btn-default" value="Search" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Response -->
+            <div id="resp" class="resp-block"></div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
