@@ -16,7 +16,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-lg-12">
             <div class="order-title">
                 <a href="{% url 'search:song_list' %}">Song list</a>
             </div>
@@ -25,7 +25,7 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-lg-12">
             <div class="search-block">
                 <form id="post-form" method="post" action="{% url 'search:ajax_search' %}">
                     {% csrf_token %}

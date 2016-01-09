@@ -10,40 +10,45 @@
 {% block js %}{% endblock js %}
 
 {% block content %}
-<div class="order-block">
-    
-    <h4 class="order-center">Order Song:</h4>
-    <p class="order-title">{{ song.artist }} - {{ song }}</p>
-    <form id="order-form" method="post" action="" class="form-horizontal">
-        {% csrf_token %}
-        {# Include the hidden fields in the form #}
-        {% if form.non_field_errors %}
-            <div class="form_errors">
-            {% for err in form.non_field_errors %}
-                <div class="form_error_message">{{ err }}</div>
-            {% endfor %}
-            </div>  
-        {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="order-block">
+                <h4 class="order-center">Order Song:</h4>
+                <p class="order-title">{{ song.artist }} - {{ song }}</p>
+                <form id="order-form" method="post" action="">
+                    {% csrf_token %}
+                    {# Include the hidden fields in the form #}
+                    {% if form.non_field_errors %}
+                        <div class="form_errors">
+                        {% for err in form.non_field_errors %}
+                            <div class="form_error_message">{{ err }}</div>
+                        {% endfor %}
+                        </div>  
+                    {% endif %}
 
-        {% for hidden in form.hidden_fields %}
-           {{ hidden }}
-        {% endfor %}
+                    {% for hidden in form.hidden_fields %}
+                       {{ hidden }}
+                    {% endfor %}
 
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
-            {% for err in field.errors %}
-                <span class="error_message">{{ err }}</span>
-            {% endfor %}
-            </div>
-        {% endfor %}
+                    {% for field in form.visible_fields %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        {% for err in field.errors %}
+                            <span class="error_message">{{ err }}</span>
+                        {% endfor %}
+                        </div>
+                    {% endfor %}
 
-        <div class="form-group">
-            <div>
-                <input type="submit" class="btn btn-default" value="Send" />
+                    <div class="form-group">
+                        <div>
+                            <input type="submit" class="btn btn-default" value="Send" />
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock content %}
